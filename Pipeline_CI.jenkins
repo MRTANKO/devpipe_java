@@ -61,7 +61,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 dir('demo/docker'){
-                    sh 'docker build -t mrtanko/jenkins-java-api:${params.VERSION} .'
+                    sh "docker build -t mrtanko/jenkins-java-api:${params.VERSION} ."
                 }
 
             }
