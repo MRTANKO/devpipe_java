@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Checkout'){
             steps {
-                git branch: 'test_without_db',
+                git branch: 'main',
                     url: 'https://github.com/MRTANKO/devapp_java'
             }
         }
