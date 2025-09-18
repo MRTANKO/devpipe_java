@@ -5,6 +5,12 @@ pipeline {
         maven 'MVNJenkins'
     }
 
+    parameters {
+        string(name: 'VERSION',
+               defaultValue: '0.1',
+               description: 'Версия для сборки')
+    }
+
     environment {
         CURRENT_DIR = pwd()
     }
@@ -55,7 +61,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 dir('demo/docker'){
-                    sh 'docker build -t mrtanko/jenkins-java-api:0.2 .'
+                    sh "docker build -t mrtanko/jenkins-java-api:${params.VERSION} ."
                 }
 
             }
@@ -64,16 +70,14 @@ pipeline {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-cred-mrtanko', url: 'https://index.docker.io/v1/') {
 //                docker.image('mrtanko/jenkins-java-api').push('v1.0.0')
-                sh '''
-                 docker push mrtanko/jenkins-java-api:0.2
-                '''
+                sh "docker push mrtanko/jenkins-java-api:${params.VERSION}"
                 }
             }
         }
         stage ('Delete local docker image')
         {
             steps {
-                sh 'docker rmi mrtanko/jenkins-java-api:0.2'
+                sh "docker rmi mrtanko/jenkins-java-api:${params.VERSION}"
             }
         }
         stage('Test pwd'){
